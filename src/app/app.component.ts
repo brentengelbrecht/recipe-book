@@ -7,9 +7,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'recipe-book';
-  loadPage = 'recipe';
-
-  onNavigate(page: string) {
-    this.loadPage = page;
-  }
 }
