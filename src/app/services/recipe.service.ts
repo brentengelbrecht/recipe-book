@@ -8,26 +8,27 @@ import { ShoppingListService } from "./shopping-list.service";
 export class RecipeService {
     recipesChanged = new Subject<Recipe[]>();
 
-    private recipes: Recipe[] = [
-        new Recipe(
-            'First recipe', 
-            'Number one', 
-            'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&webp=true&resize=300,272',
-            [
-                new Ingredient('Bread', 10),
-                new Ingredient('Tomato', 1),
-                new Ingredient('Garlic', 3)
-            ]),
-        new Recipe(
-            'Second recipe', 
-            'Number two', 
-            'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&webp=true&resize=300,272',
-            [
-                new Ingredient('Parsley', 1),
-                new Ingredient('Potato', 5),
-                new Ingredient('Onions', 3)
-            ])
-      ];
+    private recipes: Recipe[] = []
+    // private recipes: Recipe[] = [
+    //     new Recipe(
+    //         'First recipe', 
+    //         'Number one', 
+    //         'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&webp=true&resize=300,272',
+    //         [
+    //             new Ingredient('Bread', 10),
+    //             new Ingredient('Tomato', 1),
+    //             new Ingredient('Garlic', 3)
+    //         ]),
+    //     new Recipe(
+    //         'Second recipe', 
+    //         'Number two', 
+    //         'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&webp=true&resize=300,272',
+    //         [
+    //             new Ingredient('Parsley', 1),
+    //             new Ingredient('Potato', 5),
+    //             new Ingredient('Onions', 3)
+    //         ])
+    //   ];
 
     constructor(private shoppingListService: ShoppingListService) {}
 
@@ -37,6 +38,11 @@ export class RecipeService {
 
     getRecipe(index: number) {
         return this.recipes[index];
+    }
+
+    setRecipes(recipes: Recipe[]) {
+        this.recipes = recipes;
+        this.recipesChanged.next(this.recipes.slice());
     }
 
     addRecipe(recipe: Recipe) {
