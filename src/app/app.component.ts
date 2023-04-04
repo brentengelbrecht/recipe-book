@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, isDevMode } from '@angular/core';
 import { AuthService } from './services/auth.service';
+import { environment } from '../environment/environment'; 
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,14 @@ export class AppComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
+    if (isDevMode()) {
+      console.log('Running in DEVELOPMENT mode');
+    } else {
+      console.log('Running in PRODUCTION mode');
+    }
+
+    console.log('environment = ' + JSON.stringify(environment));
+
     this.authService.autoLogin();
   }
 }

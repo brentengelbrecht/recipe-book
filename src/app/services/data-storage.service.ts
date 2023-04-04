@@ -1,17 +1,23 @@
-import { HttpClient, HttpParams } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Injectable, OnInit } from "@angular/core";
 import { RecipeService } from "./recipe.service";
 
 import { Recipe } from '../model/recipe.model';
 import { map, tap } from "rxjs/operators";
 import { AuthService } from "./auth.service";
 
+import { environment } from '../../environment/environment';
+
 
 @Injectable({ providedIn: 'root' })
-export class DataStorageService {
-    private host = 'https://recipe-book-43dba-default-rtdb.europe-west1.firebasedatabase.app/recipes.json';
+export class DataStorageService implements OnInit {
+    private host = null;
 
     constructor(private http: HttpClient, private recipeService: RecipeService, private authService: AuthService) {}
+
+    ngOnInit() {
+        this.host = environment.db;
+    }
 
     storeRecipes() {
         const recipes = this.recipeService.getRecipes();

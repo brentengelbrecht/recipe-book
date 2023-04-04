@@ -1,9 +1,10 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { Injectable, OnInit } from "@angular/core";
 import { catchError, tap } from "rxjs/operators";
-import { BehaviorSubject, Subject, throwError } from "rxjs";
+import { BehaviorSubject, throwError } from "rxjs";
 import { User } from "../model/user.model";
 import { Router } from "@angular/router";
+import { environment } from '../../environment/environment'; 
 
 
 export interface AuthResponseData {
@@ -19,28 +20,41 @@ export interface AuthResponseData {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-    private apiKey = 'rogerRabbit';
-    private signupUrl = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + this.apiKey;
-    private signinUrl = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + this.apiKey;
+    private apiKey = null;
+    private signupUrl = null;
+    private signinUrl = null;
     user = new BehaviorSubject<User>(null);
     private timer: any;
 
-    constructor(private http: HttpClient, private router: Router) {}
+    constructor(private http: HttpClient, private router: Router) {
+        this.apiKey = environment.apiKey;
+        console.log('Set API key: ' + this.apiKey);
+        this.signupUrl = environment.signup + this.apiKey;
+        this.signinUrl = environment.signin + this.apiKey;
+        console.log('Set url signup: ' + this.signupUrl);
+        console.log('Set url signin: ' + this.signinUrl);
+    }
 
     private handleAuthentication(email: string, userId: string, token: string, expiresIn: number) {
         const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
         const user = new User(email, userId, token, expirationDate);
         this.user.next(user);
         this.autoLogout(expiresIn * 1000);
+
+        console.log('user =');
+        console.log(user);
         localStorage.setItem('userData', JSON.stringify(user));
     }
 
     private handleError(errResp: HttpErrorResponse) {
         let errMsg = 'Unknown error occurred';
+        console.error(errResp);
         if (!errResp.error || !errResp.error.error) {
-            return throwError(errMsg);
+            return throwError(errResp);
         }
 
+        console.log('errResp =');
+        console.log(errResp);
         switch(errResp.error.error.message) {
             case 'EMAIL_EXISTS':
                 errMsg = 'This email already exists'; break;
@@ -53,6 +67,7 @@ export class AuthService {
     }
 
     signUp(email: string, password: string) {
+        console.log('signup - ' + this.signupUrl);
         return this.http.post<AuthResponseData>(this.signupUrl, {
             email: email,
             password: password,
