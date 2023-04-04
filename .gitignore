@@ -106,3 +106,5 @@ dist
 .angular/
 .vscode
 .editorconfig
+
+src/environment

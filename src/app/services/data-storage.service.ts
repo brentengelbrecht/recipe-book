@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable, OnInit } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { RecipeService } from "./recipe.service";
 
 import { Recipe } from '../model/recipe.model';
@@ -10,12 +10,10 @@ import { environment } from '../../environment/environment';
 
 
 @Injectable({ providedIn: 'root' })
-export class DataStorageService implements OnInit {
+export class DataStorageService {
     private host = null;
 
-    constructor(private http: HttpClient, private recipeService: RecipeService, private authService: AuthService) {}
-
-    ngOnInit() {
+    constructor(private http: HttpClient, private recipeService: RecipeService, private authService: AuthService) {
         this.host = environment.db;
     }
 
