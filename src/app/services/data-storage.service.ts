@@ -6,7 +6,7 @@ import { Recipe } from '../model/recipe.model';
 import { map, tap } from "rxjs/operators";
 import { AuthService } from "./auth.service";
 
-import { environment } from '../../environment/environment';
+import { environment } from '../../environments/environment';
 
 
 @Injectable({ providedIn: 'root' })
